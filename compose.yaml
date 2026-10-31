@@ -1,0 +1,26 @@
+name: symfony-frankenphp-terminate
+
+services:
+  classic:
+    build: { context: ., target: stock }
+    image: symfony-frankenphp-terminate:stock
+    command: frankenphp php-server --listen :8080 --root public/
+    ports: ["127.0.0.1:8081:8080"]
+
+  worker:
+    build: { context: ., target: stock }
+    image: symfony-frankenphp-terminate:stock
+    command: frankenphp php-server --listen :8080 --root public/ --worker public/index.php
+    ports: ["127.0.0.1:8082:8080"]
+
+  worker-67679:
+    build: { context: ., target: pr67679 }
+    image: symfony-frankenphp-terminate:67679
+    command: frankenphp php-server --listen :8080 --root public/ --worker public/index.php
+    ports: ["127.0.0.1:8083:8080"]
+
+  worker-followup:
+    build: { context: ., target: followup }
+    image: symfony-frankenphp-terminate:followup
+    command: frankenphp php-server --listen :8080 --root public/ --worker public/index.php
+    ports: ["127.0.0.1:8084:8080"]
